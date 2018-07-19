@@ -6,7 +6,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.get('/api/progress/:username', async function(req, res){
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
     await page.goto('https://www.freecodecamp.org/' + req.params.username);
     await page.waitForSelector('.username');
