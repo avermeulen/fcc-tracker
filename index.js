@@ -32,18 +32,5 @@ app.get('/api/progress/:username', async function(req, res){
 });
 
 app.listen(PORT, function(){
-    console.log('process started on port', PORT);  
+    console.log('process started at:', PORT);  
 });
-
-// (async () => {
-  
-  
-//   let username = process.argv[2] || 'avermeulen';
-
-  
-  
-  
-//   //console.log(count);
-//   //console.log(count.includes('Change the Color of Text'));  
-  
-// })();
