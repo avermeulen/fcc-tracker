@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
+const cors = require('cors');
+
 const jsIntro = require('./data/javascript-intro.json');
 const htmlIntro = require('./data/html5.json');
 const cssIntro = require('./data/css-intro.json');
@@ -11,6 +13,8 @@ function calculateProgress(userActivityList, challangesList){
     let progess = activities.length / challangesList.challenges.length;  
     return Math.floor(progess * 100);
 }
+
+app.use(cors());
 
 app.get('/api/progress/:username', async function(req, res, next){
     try {
