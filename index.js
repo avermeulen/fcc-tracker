@@ -30,12 +30,12 @@ app.get('/api/progress/:username', async function(req, res, next){
                 await browser.close();
             }
             catch(err) {
-                next(err);
+                res.send(err.stack);
             }
         }, 1000);
     }
     catch(err){
-        next(err);
+        res.send(err.stack);
     }
 
     
