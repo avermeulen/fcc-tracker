@@ -32,5 +32,5 @@ app.get('/api/progress/:username', async function(req, res){
 });
 
 app.listen(PORT, function(){
-    console.log('process started at:', PORT);  
+    console.log('process running at:', PORT);  
 });
