@@ -12,7 +12,9 @@ app.get('/api/progress/:username', async function(req, res, next){
         });
         const page = await browser.newPage();
         await page.goto('https://www.freecodecamp.org/' + req.params.username);
-        await page.waitForSelector('.username');
+        await page.waitForSelector('.username', {
+            timeout : 5000
+        });
     
         setTimeout(async function(){
             try {
