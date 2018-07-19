@@ -49,7 +49,7 @@ app.get('/api/progress/:username', async function(req, res, next){
                 await browser.close();
             }
             catch(err) {
-                return json.send({
+                return res.json({
                     status: 'error',
                     error: err.stack
                 });
@@ -57,7 +57,7 @@ app.get('/api/progress/:username', async function(req, res, next){
         }, 1000);
     }
     catch(err){
-        return json.send({
+        return res.json({
             status: 'error',
             error: err.stack
         });
