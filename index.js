@@ -4,7 +4,6 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const CodecampProgressTracker = require('./codecamp-progress-tracker');
-app.use(cors());
 
 async function start () {
     const browser = await puppeteer.launch({
@@ -12,6 +11,7 @@ async function start () {
     });
 
     const codecampProgressTracker = CodecampProgressTracker(browser);
+    app.use(cors());
     app.get('/api/progress/:username', codecampProgressTracker);
 
     app.listen(PORT, function () {
