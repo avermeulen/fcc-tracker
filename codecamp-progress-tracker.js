@@ -10,12 +10,12 @@ function calculateProgress (userActivityList, challangesList) {
 
 module.exports = function (browser) {
     return async function (req, res) {
+        const username = req.params.username;
         try {
-            const username = req.params.username;
             const page = await browser.newPage();
             await page.goto('https://www.freecodecamp.org/' + username);
             await page.waitForSelector('.username', {
-                timeout: 5000
+                timeout: 3000
             });
             setTimeout(async function () {
                 try {
@@ -44,6 +44,12 @@ module.exports = function (browser) {
                 }
             }, 1000);
         } catch (err) {
+            if (err.stack.indexOf('failed: timeout') !== -1) {
+                return res.json({
+                    status: 'no-profile',
+                    username
+                });
+            }
             return res.json({
                 status: 'error',
                 error: err.stack
