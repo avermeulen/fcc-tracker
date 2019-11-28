@@ -36,8 +36,11 @@ module.exports = function (browser) {
 
                     const pageCount = await page.evaluate(function (sel) {
                         let elems = document.querySelectorAll(sel);
-                        let parts = elems[1].innerText.split('of');
-                        return Number(parts[parts.length - 1]);
+                        if (elems && elems.length > 1) {
+                            let parts = elems[1].innerText.split('of');
+                            return Number(parts[parts.length - 1]);
+                        }
+                        return 0;
                     }, '.timeline-pagination_list_item');
 
                     const lastActiveAt = await page.evaluate(function (sel) {
