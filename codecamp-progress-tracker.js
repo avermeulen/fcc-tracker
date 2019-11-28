@@ -3,6 +3,7 @@ const htmlIntro = require('./data/html5.json');
 const cssIntro = require('./data/css-intro.json');
 
 function calculateProgress (userActivityList, challangesList) {
+    
     let activities = userActivityList.filter((activity) => challangesList.challenges.includes(activity));
     let progess = activities.length / challangesList.challenges.length;
     return Math.floor(progess * 100);
@@ -15,7 +16,7 @@ module.exports = function (browser) {
             const page = await browser.newPage();
             await page.goto('https://www.freecodecamp.org/' + username);
             await page.waitForSelector('.username', {
-                timeout: 3000
+                timeout: process.env.PAGE_LOAD_TIMEOUT || 3000
             });
             setTimeout(async function () {
                 try {
@@ -27,13 +28,36 @@ module.exports = function (browser) {
                         }
                         return results;
                     }, '.table-striped > tbody > tr > td > a');
+
+                    const userPoints = await page.evaluate(function (sel) {
+                        let elem = document.querySelector(sel);
+                        return elem.innerText;
+                    }, '.text-center.points');
+
+                    const pageCount = await page.evaluate(function (sel) {
+                        let elems = document.querySelectorAll(sel);
+                        let parts = elems[1].innerText.split('of');
+                        return Number(parts[parts.length - 1]);
+                    }, '.timeline-pagination_list_item');
+
+                    const lastActiveAt = await page.evaluate(function (sel) {
+                        let elem = document.querySelector(sel);
+                        if (elem) {
+                            return elem.children[1].firstChild.dateTime;
+                        }
+                        // return null;
+                    }, '.timeline-row');
+                    
                     res.json({
                         status: 'success',
                         data: {
                             username,
                             js: calculateProgress(userActivity, jsIntro),
                             html: calculateProgress(userActivity, htmlIntro),
-                            css: calculateProgress(userActivity, cssIntro)
+                            css: calculateProgress(userActivity, cssIntro),
+                            userPoints,
+                            pageCount,
+                            lastActiveAt
                         }
                     });
                 } catch (err) {
