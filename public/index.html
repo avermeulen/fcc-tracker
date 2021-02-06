@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+		integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
+		integrity="sha512-zT3zHcFYbQwjHdKjCu6OMmETx8fJA9S7E6W7kBeFxultf75OPTYUJigEKX58qgyQMi1m1EgenfjMXlRZG8BXaw=="
+		crossorigin="anonymous"></script>
+	<script type="x-template" class="progressTemplate">
+
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>Points</th>
+						<th>Page count</th>
+						<th>JavaScript %</th>
+						<th>Html %</th>
+						<th>CSS %</th>
+						<th>Last Active</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{userPoints}}</td>
+						<td>{{pageCount}}</td>
+						<td>{{js}}</td>
+						<td>{{html}}</td>
+						<td>{{css}}</td>
+						<td>{{lastActiveAt}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<h1>fCC progress</h1>
+		<div class="spinner hidden"></div>
+
+		<div class="progress">
+
+		</div>
+		<div>
+			<div class="input">
+				<strong>fCC username</strong>
+				<input type="text" class="username" placeholder="enter username">
+			</div>
+			<div class="input">
+				
+			</div>
+			<div class="input">
+				<input type="button" class="findProgress" value="Find progress">
+			</div>
+		</div>
+		<div class="results">
+		</div>
+	</div>
+	<script src="index.js"></script>
+</body>
+
+</html>

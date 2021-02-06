@@ -5,6 +5,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const CodecampProgressTracker = require('./codecamp-progress-route');
 
+app.use(express.static('public'))
+
 async function start () {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
