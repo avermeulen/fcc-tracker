@@ -2,6 +2,7 @@
 const jsIntro = require('./data/javascript-intro.json');
 const htmlIntro = require('./data/html5.json');
 const cssIntro = require('./data/css-intro.json');
+const puppeteer = require('puppeteer');
 
 function calculateProgress (userActivityList, challangesList) {
 
@@ -10,19 +11,23 @@ function calculateProgress (userActivityList, challangesList) {
     return Math.floor(progess * 100);
 }
 
-module.exports = function (browser) {
+module.exports = function () {
 
     async function scrape (username) {
         return new Promise(async function (resolve, reject) {
             try {
 
-                const page = await browser.newPage();
+                let browser = await puppeteer.launch({
+                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--js-flags=--expose-gc']
+                });
+
+                let page = await browser.newPage();
                 await page.goto('https://www.freecodecamp.org/' + username);
                 await page.waitForSelector('.username', {
                     timeout: process.env.PAGE_LOAD_TIMEOUT || 3000
                 });
                 var { userActivity, userPoints, pageCount, lastActiveAt } = await getPageTotals(page);
-                let activities = [...userActivity];	
+                let activities = [...userActivity];
                 const context = {
                     username,
                     js: 0,
@@ -46,6 +51,8 @@ module.exports = function (browser) {
                 context.html = calculateProgress(activities, htmlIntro);
                 context.cssIntro = calculateProgress(activities, cssIntro);
 
+				
+
                 resolve({
                     username,
                     js: calculateProgress(activities, jsIntro),
@@ -54,8 +61,17 @@ module.exports = function (browser) {
                     userPoints,
                     pageCount,
                     lastActiveAt
-                });
-                page.close();
+				});
+
+				await page.close();
+				await browser.close();
+				
+                page = null;
+                browser = null;
+                // await page.evaluate(() => gc());
+                
+                console.log('done.');
+
             } catch (err) {
                 // eslint-disable-next-line prefer-promise-reject-errors
                 reject({

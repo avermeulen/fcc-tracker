@@ -12,12 +12,12 @@ function calculateProgress (userActivityList, challangesList) {
     return Math.floor(progess * 100);
 }
 
-module.exports = function (browser) {
+module.exports = function () {
     return async function (req, res) {
         const username = req.params.username;
         try {
                         
-            const codeCampScraper = CodecampScraper(browser);
+            const codeCampScraper = CodecampScraper();
 
             const result = await codeCampScraper.scrape(username);
 
