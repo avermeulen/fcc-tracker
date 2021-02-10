@@ -16,9 +16,12 @@ findProgressBtn.addEventListener('click', function () {
     const username = usernameElem.value;
     toggleSpinner();
     resultsElem.innerHTML = '';
-	
+
+	const url = `http://46.101.23.32:3001/api/progress/${username}`;
+	const url2 = `http://fcc-tracker.herokuapp.com/api/progress/${username}`;
+
     axios
-        .get(`http://fcc-tracker.herokuapp.com/api/progress/${username}`)
+        .get(url)
         .then(function (res) {
             resultsElem.innerHTML = progressTemplate(res.data);
             toggleSpinner();

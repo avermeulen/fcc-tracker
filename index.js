@@ -7,8 +7,6 @@ const CodecampProgressTracker = require('./codecamp-progress-route');
 app.use(express.static('public'));
 
 async function start () {
-    
-
     const codecampProgressTracker = CodecampProgressTracker();
     app.use(cors());
     app.get('/api/progress/:username', codecampProgressTracker);
