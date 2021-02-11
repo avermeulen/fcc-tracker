@@ -5,7 +5,7 @@ const CodecampScraper = require('./codecamp-progess-scraper');
     try {
         const codeCampScraper = CodecampScraper();
         // console.log(codeCampScraper);
-        const result = await codeCampScraper.scrape('Tlangelani24');
+        const result = await codeCampScraper.scrape('loras26');
         console.log(result);
     } catch (err) {
         console.log(err);

@@ -39,8 +39,10 @@ module.exports = function () {
                 };
 
                 for (let currentCount = 1; currentCount < pageCount; currentCount++) {
-                    const nextPageButton = "[aria-label='Go to Next page']";
+                    const nextPageButton = "[aria-label='Go to next page']";
                     await page.click(nextPageButton);
+                    // await page.screenshot({path: `page${currentCount}.png`});
+
                     var { userActivity } = await getPageTotals(page);
                     // console.log(userActivity.length);
 
@@ -100,7 +102,10 @@ module.exports = function () {
             const pageCount = await page.evaluate(function (sel) {
                 let elems = document.querySelectorAll(sel);
                 if (elems && elems.length > 1) {
-                    let parts = elems[1].innerText.split('of');
+                    const pageCountElement = [...elems].find(el => el.innerText.includes('of'));
+                    console.log(pageCountElement);
+                    let parts = pageCountElement.innerText.split('of');
+
                     return Number(parts[parts.length - 1]);
                 }
                 return 0;
@@ -113,9 +118,6 @@ module.exports = function () {
                 }
                 return null;
             }, 'time');
-
-
-            await page.screenshot({path: 'page1.png'});
 
             return { 
                 userActivity,
