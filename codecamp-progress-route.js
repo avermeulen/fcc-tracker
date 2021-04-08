@@ -11,12 +11,20 @@ module.exports = function () {
 
             return res.send(result);
         } catch (err) {
+            if (!err.stack) {
+                return res.json({
+                    status: 'error',
+                    error: err
+                });
+            }
+
             if (err.stack.indexOf('failed: timeout') !== -1) {
                 return res.json({
                     status: 'no-profile',
                     username
                 });
             }
+            
             return res.json({
                 status: 'error',
                 error: err.stack
