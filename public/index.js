@@ -22,7 +22,12 @@ findProgressBtn.addEventListener('click', function () {
     axios
         .get(url)
         .then(function (res) {
-            resultsElem.innerHTML = progressTemplate(res.data);
+            if (res.data.status === 'error') {
+                resultsElem.innerHTML = res.data.error.error;
+            } else {
+                resultsElem.innerHTML = progressTemplate(res.data);
+            }
+
             toggleSpinner();
         })
         .catch(function (err) {
