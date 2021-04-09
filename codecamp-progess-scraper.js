@@ -12,16 +12,24 @@ function calculateProgress (userActivityList, challangesList) {
 }
 
 module.exports = function () {
+    let browser = null;
+
+    async function getBrowser() {
+        if (!browser) {
+            browser = await puppeteer.launch({
+                args: ['--no-sandbox', '--disable-setuid-sandbox', '--js-flags=--expose-gc']
+            });
+            console.log('create browser')
+        }
+        return browser;
+    }
+
 
     async function scrape (username) {
         return new Promise(async function (resolve, reject) {
             try {
-
-                let browser = await puppeteer.launch({
-                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--js-flags=--expose-gc']
-                });
-
-                let page = await browser.newPage();
+                const theBrowser = await getBrowser()
+                let page = await theBrowser.newPage();
                 await page.goto('https://www.freecodecamp.org/' + username);
                 await page.waitForSelector('.username', {
                     timeout: process.env.PAGE_LOAD_TIMEOUT || 3000
@@ -53,8 +61,6 @@ module.exports = function () {
                 context.html = calculateProgress(activities, htmlIntro);
                 context.cssIntro = calculateProgress(activities, cssIntro);
 
-				
-
                 resolve({
                     username,
                     js: calculateProgress(activities, jsIntro),
@@ -63,18 +69,14 @@ module.exports = function () {
                     userPoints,
                     pageCount,
                     lastActiveAt
-				});
-
-				await page.close();
-				await browser.close();
-				
+                });
+                await page.close();
+                // await browser.close();
                 page = null;
-                browser = null;
-                // await page.evaluate(() => gc());
-                
-                console.log('done.');
-
             } catch (err) {
+                // eslint-disable-next-line prefer-promise-reject-errors
+                console.log(err);
+                browser = null;
                 // eslint-disable-next-line prefer-promise-reject-errors
                 reject({
                     status: 'error',
