@@ -14,7 +14,7 @@ function calculateProgress (userActivityList, challangesList) {
 module.exports = function () {
     let browser = null;
 
-    async function getBrowser() {
+    async function getBrowser  () {
         if (!browser) {
             browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox', '--js-flags=--expose-gc']
@@ -28,11 +28,24 @@ module.exports = function () {
     async function scrape (username) {
         return new Promise(async function (resolve, reject) {
             try {
-                const theBrowser = await getBrowser()
+                const theBrowser = await getBrowser();
                 let page = await theBrowser.newPage();
+
+                await page.setRequestInterception(true);
+                // ignore stylesheets, images & fonts
+                page.on('request', (req) => {
+                    if (req.resourceType() === 'stylesheet' ||
+                        req.resourceType() === 'font' ||
+                        req.resourceType() === 'image') {
+                        req.abort();
+                    } else {
+                        req.continue();
+                    }
+                });
+
                 await page.goto('https://www.freecodecamp.org/' + username);
                 await page.waitForSelector('.username', {
-                    timeout: process.env.PAGE_LOAD_TIMEOUT || 3000
+                    timeout: process.env.PAGE_LOAD_TIMEOUT || 5000
                 });
                 var { userActivity, userPoints, pageCount, lastActiveAt } = await getPageTotals(page);
                 let activities = [...userActivity];
