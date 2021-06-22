@@ -14,16 +14,15 @@ function calculateProgress (userActivityList, challangesList) {
 module.exports = function () {
     let browser = null;
 
-    async function getBrowser  () {
+    async function getBrowser () {
         if (!browser) {
             browser = await puppeteer.launch({
-                args: ['--no-sandbox', '--disable-setuid-sandbox', '--js-flags=--expose-gc']
+                args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-accelerated-2d-canvas', '--no-first-run', '--no-zygote', '--single-process', '--disable-gpu']
             });
-            console.log('create browser')
+            // console.log('create browser')
         }
         return browser;
     }
-
 
     async function scrape (username) {
         return new Promise(async function (resolve, reject) {
