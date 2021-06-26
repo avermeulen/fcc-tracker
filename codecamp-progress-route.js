@@ -1,22 +1,19 @@
 const CodecampScraper = require('./codecamp-progess-scraper');
 
 module.exports = function () {
-    let codeCampScraper = null;
+    let codeCampScraper = CodecampScraper();
     let scrapeCounter = 0;
 
     function codeCampScraperInstance () {
 
-        if (!codeCampScraper || scrapeCounter === 100) {
-            codeCampScraper = CodecampScraper();
+        if (scrapeCounter === 50) {
+            codeCampScraper.cleanup();
             scrapeCounter = 0;
         }
 
         scrapeCounter++;
         return codeCampScraper;
-        
     }
-
-
 
     return async function (req, res) {
         const username = req.params.username;

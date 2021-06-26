@@ -133,7 +133,7 @@ module.exports = function () {
                 return null;
             }, 'time');
 
-            return { 
+            return {
                 userActivity,
                 userPoints,
                 pageCount,
@@ -142,7 +142,14 @@ module.exports = function () {
         }
     }
 
+    function cleanup () {
+        browser.close();
+        console.log('cleaning browser up');
+        browser = null;
+    }
+
     return {
+        cleanup,
         scrape
     };
 };
