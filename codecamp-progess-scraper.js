@@ -143,9 +143,11 @@ module.exports = function () {
     }
 
     function cleanup () {
-        browser.close();
-        console.log('cleaning browser up');
-        browser = null;
+        if (browser) {
+            browser.close();
+            console.log('cleaning browser up');
+            browser = null;
+        }
     }
 
     return {
