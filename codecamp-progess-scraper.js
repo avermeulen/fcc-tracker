@@ -4,11 +4,31 @@ const htmlIntro = require('./data/html5.json');
 const cssIntro = require('./data/css-intro.json');
 const puppeteer = require('puppeteer');
 
+const catPhotoApp = createJSONFile('Learn HTML by Building a Cat Photo App', 69);
+
 function calculateProgress (userActivityList, challangesList) {
 
     let activities = userActivityList.filter((activity) => challangesList.challenges.includes(activity));
     let progess = activities.length / challangesList.challenges.length;
     return Math.floor(progess * 100);
+}
+
+/**
+ *
+ *
+ * @param {String} name - Project Name
+ * @param {Number} numberOfSteps - Number of steps per project
+ * @return {Object} Object containing project name and challenges
+ */
+function createJSONFile (name, numberOfSteps) {
+    var challenges = [];
+    for (var i = 1; i <= numberOfSteps; i++) {
+        challenges.push(`${name} - Step ${i}`);
+    }
+    return {
+        name,
+        challenges
+    };
 }
 
 module.exports = function () {
@@ -53,6 +73,7 @@ module.exports = function () {
                     js: 0,
                     html: 0,
                     css: 0,
+                    catPhotoApp: 0,
                     userPoints,
                     pageCount,
                     lastActiveAt
@@ -72,12 +93,14 @@ module.exports = function () {
                 context.js = calculateProgress(activities, jsIntro);
                 context.html = calculateProgress(activities, htmlIntro);
                 context.cssIntro = calculateProgress(activities, cssIntro);
+                context.catPhotoApp = calculateProgress(activities, catPhotoApp);
 
                 resolve({
                     username,
                     js: calculateProgress(activities, jsIntro),
                     html: calculateProgress(activities, htmlIntro),
                     css: calculateProgress(activities, cssIntro),
+                    catPhotoApp: calculateProgress(activities, catPhotoApp),
                     userPoints,
                     pageCount,
                     lastActiveAt
