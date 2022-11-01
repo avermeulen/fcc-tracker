@@ -5,6 +5,7 @@ const cssIntro = require('./data/css-intro.json');
 const puppeteer = require('puppeteer');
 
 const catPhotoApp = createJSONFile('Learn HTML by Building a Cat Photo App', 69);
+const cafeMenu = createJSONFile('Learn Basic CSS by Building a Cafe Menu', 94);
 
 function calculateProgress (userActivityList, challangesList) {
 
@@ -74,6 +75,7 @@ module.exports = function () {
                     html: 0,
                     css: 0,
                     catPhotoApp: 0,
+                    cafeMenu: 0,
                     userPoints,
                     pageCount,
                     lastActiveAt
@@ -94,6 +96,7 @@ module.exports = function () {
                 context.html = calculateProgress(activities, htmlIntro);
                 context.cssIntro = calculateProgress(activities, cssIntro);
                 context.catPhotoApp = calculateProgress(activities, catPhotoApp);
+                context.cafeMenu = calculateProgress(activities, cafeMenu);
 
                 resolve({
                     username,
@@ -101,6 +104,7 @@ module.exports = function () {
                     html: calculateProgress(activities, htmlIntro),
                     css: calculateProgress(activities, cssIntro),
                     catPhotoApp: calculateProgress(activities, catPhotoApp),
+                    cafeMenu: calculateProgress(activities, cafeMenu),
                     userPoints,
                     pageCount,
                     lastActiveAt
