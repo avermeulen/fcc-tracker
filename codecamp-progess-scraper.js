@@ -137,7 +137,7 @@ module.exports = function () {
 
             const userPoints = await page.evaluate(function (sel) {
                 let elem = document.querySelector(sel);
-                return Number(elem.innerText.split(' ')[0]);
+                return Number(elem.innerText.split(': ')[1]);
             }, '.text-center.points');
 
             const pageCount = await page.evaluate(function (sel) {
