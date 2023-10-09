@@ -133,7 +133,7 @@ module.exports = function () {
                     results.push(elem.innerHTML);
                 }
                 return results;
-            }, '.table-striped > tbody > tr > td > a');
+            }, '.table-auto > tbody > tr > td > a');
 
             const userPoints = await page.evaluate(function (sel) {
                 let elem = document.querySelector(sel);
