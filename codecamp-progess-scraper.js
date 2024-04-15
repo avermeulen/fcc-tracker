@@ -5,7 +5,7 @@ const cssIntro = require('./data/css-intro.json');
 const puppeteer = require('puppeteer');
 
 const catPhotoApp = createJSONFile('Learn HTML by Building a Cat Photo App', 69);
-const cafeMenu = createJSONFile('Learn Basic CSS by Building a Cafe Menu', 94);
+const cafeMenu = createJSONFile('Learn Basic CSS by Building a Cafe Menu', 91);
 
 function calculateProgress (userActivityList, challangesList) {
 
