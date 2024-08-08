@@ -64,9 +64,15 @@ module.exports = function () {
                 });
 
                 await page.goto('https://www.freecodecamp.org/' + username);
-                await page.waitForSelector('.username', {
+                await page.waitForSelector('h1', {
                     timeout: process.env.PAGE_LOAD_TIMEOUT || 5000
                 });
+
+                await page.evaluate((username) => {
+                    const h1Element = document.querySelector('h1');
+                    return h1Element ? h1Element.textContent.includes(username) : false;
+                }, username);
+
                 var { userActivity, userPoints, pageCount, lastActiveAt } = await getPageTotals(page);
                 let activities = [...userActivity];
                 const context = {
@@ -137,7 +143,7 @@ module.exports = function () {
 
             const userPoints = await page.evaluate(function (sel) {
                 let elem = document.querySelector(sel);
-                return Number(elem.innerText.split(': ')[1]);
+                return Number(elem?.innerText?.split(': ')[1]);
             }, '.text-center.points');
 
             const pageCount = await page.evaluate(function (sel) {
