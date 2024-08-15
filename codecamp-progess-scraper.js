@@ -141,10 +141,18 @@ module.exports = function () {
                 return results;
             }, '.table-auto > tbody > tr > td > a');
 
-            const userPoints = await page.evaluate(function (sel) {
-                let elem = document.querySelector(sel);
-                return Number(elem?.innerText?.split(': ')[1]);
-            }, '.text-center.points');
+            const userPoints = await page.evaluate(() => {
+                // As FCC elements changed, we had to find the <dd> element that follows the <dt> containing "Total Points:"
+                const totalPointsElement = document.querySelector('dl.stats div:nth-child(2) dd');
+                const points = totalPointsElement ? totalPointsElement.textContent.trim() : 0;
+                return Number(points)
+              });
+
+            // const userPoints = await page.evaluate(function (sel) {
+            //     let elem = document.querySelector(sel);
+            //     return Number(elem?.innerText?.split(': ')[1]);
+            // }, '.text-center.points');
+
 
             const pageCount = await page.evaluate(function (sel) {
                 let elems = document.querySelectorAll(sel);
